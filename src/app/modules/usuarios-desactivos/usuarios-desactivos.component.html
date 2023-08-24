@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SUPRE demo</title>
+  </head>
+  <body>
+   <div style="margin: 16px;">
+    <nav class="navbar navbar-light bg-light">
+      <!-- <button pButton pRipple label="Agregar Usuario" icon="pi pi-plus" class="p-button-success mr-2"
+                            (click)="openNew()"></button> -->
+      <div style="width: 100%; display: flex; justify-content: flex-end;">
+        <a class="nav-item nav-link active" routerLink="/home" >Usuarios activos</a>
+      </div>
+    </nav>
+    <p-toast></p-toast>
+    <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">Agregar Usuario</button> -->
+   <br>
+   <h2>Usuarios Desactivados</h2>
+      <br>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Docuemnto</th>
+            <th scope="col">Primer nombre</th>
+            <th scope="col">Primer aprellido</th>
+            <th scope="col">Email</th>
+            <th scope="col">opciones</th>
+          </tr>
+        </thead>
+        <tbody >
+          <ng-container *ngIf="userArray.length > 0">
+            <tr *ngFor="let use of userArray;let index = index">
+              <th scope="row"> {{index + 1}} </th>
+              <td> {{use?.iden}} </td>
+              <td>{{use.primer_nombre}}</td>
+              <td>{{use.primer_apellido}}</td>
+              <td> {{use.email}} </td>
+              <td> 
+                <p-button type="button"  styleClass="p-button-raised p-button-warning" icon="pi pi-check" label="Eliminar O activar"
+                (click)="darDeBaja(index,use)"></p-button>
+               </td>
+            </tr>  
+          </ng-container>
+          
+          <ng-container *ngIf="userArray.length == 0">
+            <br>
+            <div class="alert alert-primary" role="alert"  style=" display: flex;justify-content: space-around; width: 307%;">
+             No hay usuarios desactivados!
+            </div>
+          </ng-container>
+        </tbody>
+      </table>
+   </div>
+
+
+
+<p-confirmDialog #cd [style]="{width: '50vw'}">
+  <ng-template pTemplate="header">
+      <h3>Gestion de Usuario</h3>
+  </ng-template>
+  <ng-template pTemplate="footer">
+      <p-button type="button" styleClass="p-button-raised p-button-danger" icon="pi pi-times" label="Eliminar" (click)="cd.reject()"></p-button>
+      <p-button type="button"  styleClass="p-button-raised p-button-help" icon="pi pi-check" label="Activar" (click)="cd.accept()"></p-button>
+  </ng-template>
+</p-confirmDialog>
+
+
+
+</body>
+
+
+
+
+</html>
+

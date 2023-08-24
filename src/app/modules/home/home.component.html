@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SUPRE demo</title>
+  </head>
+  <body>
+   <div style="margin: 16px;">
+    <nav class="navbar navbar-light bg-light">
+      <button pButton pRipple label="Agregar Usuario" icon="pi pi-plus" class="p-button-success mr-2"
+                            (click)="openNew()"></button>
+      <div>
+        <a class="nav-item nav-link active" routerLink="/user">Usuarios desactivos</a>
+      </div>
+    </nav>
+    <p-toast></p-toast>
+    <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">Agregar Usuario</button> -->
+    <br>
+   <h2>Usuarios Activos</h2>
+      <br>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Docuemnto</th>
+            <th scope="col">Primer nombre</th>
+            <th scope="col">Primer aprellido</th>
+            <th scope="col">Email</th>
+            <th scope="col">opciones</th>
+          </tr>
+        </thead>
+        <tbody >
+          <ng-container *ngIf="userArray.length > 0">
+            <tr *ngFor="let use of userArray;let index = index">
+              <th scope="row"> {{index + 1}} </th>
+              <td> {{use?.iden}} </td>
+              <td>{{use.primer_nombre}}</td>
+              <td>{{use.primer_apellido}}</td>
+              <td> {{use.email}} </td>
+              <td> 
+                <p-button type="button"  styleClass="p-button-raised p-button-warning" icon="pi pi-check" label="Dar de baja"
+                (click)="darDeBaja(index,use)"></p-button>
+               </td>
+            </tr>  
+          </ng-container>
+          
+          <ng-container *ngIf="userArray.length == 0">
+            <br>
+            <div class="alert alert-primary" role="alert" style=" display: flex;justify-content: space-around; width: 307%;">
+             No hay usuarios activados!
+            </div>
+          </ng-container>
+        </tbody>
+      </table>
+   </div>
+
+
+   <!-- <p-dialog [(visible)]="productDialog" [style]="{width: '450px'}" header="Gestion de botes" [modal]="true"
+   class="p-fluid">
+   </p-dialog> -->
+   <p-dialog header="Agregar Usuario" [(visible)]="productDialog" [style]="{width: '60vw'}">
+   <!-- <div class="groupinput">
+    <div class="p-inputgroup">
+      <span class="p-inputgroup-addon">
+          <i class="pi pi-user"></i>
+      </span>
+      <input pInputText placeholder="Username" />
+  </div>
+  <div class="p-inputgroup">
+      <span class="p-inputgroup-addon">$</span>
+      <input type="text" pInputText placeholder="Price" />
+      <span class="p-inputgroup-addon">.00</span>
+  </div>
+   </div> -->
+   <form>
+    <div class="row">
+      <div class="col">
+        <div>
+          <p-dropdown [options]="tipo_iden_object" [(ngModel)]="tipo_iden" name="tipo_iden" optionLabel="name"
+          placeholder="Seleccione el tipo de identidad" optionValue="code"></p-dropdown>
+          <!-- <input type="text" pInputText placeholder="Tipo Identidad" name="tipo_iden" [(ngModel)]= "tipo_iden" />  -->
+      </div>
+      </div>
+      <div class="col">
+        <div>
+          <p-calendar name="fecha_expedicion" placeholder="Fecha expedicion" [(ngModel)]="fecha_expedicion"></p-calendar>
+          <!-- <input type="text" pInputText placeholder="Fecha expedicion" name="fecha_expedicion" [(ngModel)]="fecha_expedicion"/> -->
+          
+      </div>
+      </div>
+      <div class="col">
+        <div >
+          <p-calendar name="fecha_nacimiento" placeholder="Fecha nacimiento" [(ngModel)]="fecha_nacimiento"></p-calendar>
+
+          <!-- <input type="text" pInputText placeholder="Fecha nacimiento" name="fecha_nacimiento" [(ngModel)]="fecha_nacimiento"> -->
+      </div>
+      </div>
+     
+    </div>
+    <br>
+
+    <div class="row">
+
+      <div class="col">
+        <div class="p-inputgroup">
+          <span class="p-inputgroup-addon">
+              <i class="pi pi-user"></i>
+          </span>
+          <input pInputText placeholder="Numero identidad" name="iden" [(ngModel)]="iden"/>
+      </div>
+      </div>
+      <div class="col">
+        <div class="p-inputgroup">
+          <span class="p-inputgroup-addon">
+              <i class="pi pi-user"></i>
+          </span>
+          <input pInputText placeholder="Direccion" name="direccion" [(ngModel)]="direccion"/>
+      </div>
+      </div>
+
+    </div>
+    <br>
+    <div class="row">
+      <div class="col">
+        <div class="p-inputgroup">
+          <span class="p-inputgroup-addon"></span>
+          <input type="text" pInputText placeholder="Primer Nombre" name="primer_nombre" [(ngModel)]="primer_nombre" />
+      </div>
+      </div>
+      <div class="col">
+        <div class="p-inputgroup">
+          <span class="p-inputgroup-addon">
+              <i class="pi pi-user"></i>
+          </span>
+          <input pInputText placeholder="Segundo nombre" name="segundo_nombre" [(ngModel)]="segundo_nombre" />
+      </div>
+      </div>
+    </div>
+     <br>
+    <div class="row">
+      <div class="col">
+        <div class="p-inputgroup">
+          <span class="p-inputgroup-addon"></span>
+          <input type="text" pInputText placeholder="Primer apellido" name="primer_apellido" [(ngModel)]="primer_apellido"/>
+          
+      </div>
+      </div>
+      <div class="col">
+        <div class="p-inputgroup">
+          <span class="p-inputgroup-addon">
+              <i class="pi pi-user"></i>
+          </span>
+          <input pInputText placeholder="Segundo apellido" name="segundo_apellido" [(ngModel)]="segundo_apellido"/>
+      </div>
+      </div>
+    </div>
+     <br>
+    <div class="row">
+      <div class="col">
+        <div class="p-inputgroup">
+          <span class="p-inputgroup-addon"></span>
+          <input type="text" pInputText placeholder="Razon Social" name="razon_social" [(ngModel)]="razon_social"/>
+          
+      </div>
+      </div>
+      <div class="col">
+        <div class="p-inputgroup">
+          <span class="p-inputgroup-addon">
+              <i class="pi pi-user"></i>
+          </span>
+          <input pInputText placeholder="Cuenta Fiscal" name="id_cuenta_fiscal" [(ngModel)]="id_cuenta_fiscal"/>
+      </div>
+      </div>
+    </div>
+    <br>
+    <!-- <div class="row">
+      
+      <div class="col">
+        <div class="p-inputgroup">
+          <span class="p-inputgroup-addon">$</span>
+          <p-calendar name="fecha_expedicion" placeholder="Fecha expedicion" [(ngModel)]="fecha_expedicion"></p-calendar>
+        
+          
+      </div>
+      </div>
+      <div class="col">
+        <div class="p-inputgroup">
+          <span class="p-inputgroup-addon">
+              <i class="pi pi-user"></i>
+          </span>
+          <p-calendar name="fecha_nacimiento" placeholder="Fecha nacimiento" [(ngModel)]="fecha_nacimiento"></p-calendar>
+
+         
+      </div>
+      </div>
+    </div> -->
+    <br>
+    <div class="row">
+      <div class="col">
+        <div class="p-inputgroup">
+          <span class="p-inputgroup-addon"></span>
+          <input type="text" pInputText placeholder="Email" name="email" [(ngModel)]="email">
+           
+      </div>
+      </div>
+      <div class="col">
+        <div class="p-inputgroup">
+          <span class="p-inputgroup-addon">
+              <i class="pi pi-user"></i>
+          </span>
+          <input pInputText placeholder="Celular" name="celular" [(ngModel)]="celular"/>
+      </div>
+      </div>
+    </div>
+    <br>
+   
+  </form>
+  <!-- <div class="p-inputgroup">
+      <span class="p-inputgroup-addon">www</span>
+      <input type="text" pInputText placeholder="Website" />
+  </div> -->
+  <ng-template pTemplate="footer">
+    <p-button icon="pi pi-check" (click)="agregarUser()" label="Guardar" styleClass="p-button-secondary p-button-text"></p-button>
+    <p-button icon="pi pi-check" (click)="cancelarGuardar()" label="Cancelar" styleClass="p-button-danger p-button-text"></p-button>
+</ng-template>
+</p-dialog>
+
+
+
+
+
+<p-confirmDialog #cd [style]="{width: '50vw'}">
+  <ng-template pTemplate="header">
+      <h3>Gestion de Usuario</h3>
+  </ng-template>
+  <ng-template pTemplate="footer">
+      <p-button type="button" styleClass="p-button-raised p-button-danger" icon="pi pi-times" label="Eliminar" (click)="cd.reject()"></p-button>
+      <p-button type="button"  styleClass="p-button-raised p-button-help" icon="pi pi-check" label="Desactivar" (click)="cd.accept()"></p-button>
+  </ng-template>
+</p-confirmDialog>
+
+
+
+</body>
+
+
+
+
+</html>
+
